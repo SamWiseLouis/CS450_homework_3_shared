@@ -9,6 +9,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Observable;
@@ -20,6 +22,11 @@ public class MainActivity
 
     private TextView tv_lat;
     private TextView tv_lon;
+    private TextView tv_velo;
+    private Button new_point;
+
+    private Double curr_lat;
+    private Double curr_lon;
 
     private Observable location;
     private LocationHandler handler = null;
@@ -35,6 +42,19 @@ public class MainActivity
         setContentView(R.layout.activity_main);
         this.tv_lat = findViewById(R.id.tv_lat);
         this.tv_lon = findViewById(R.id.tv_lon);
+        this.tv_velo =findViewById(R.id.tv_velocity);
+
+      //add point button click listener
+        this.new_point = findViewById(R.id.new_point);
+        new_point.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
+
 
         if (handler == null) {
             this.handler = new LocationHandler(this);
@@ -92,6 +112,9 @@ public class MainActivity
                 public void run() {
                     tv_lat.setText(Double.toString(lat));
                     tv_lon.setText(Double.toString(lon));
+                   //save values just in case
+                    curr_lat = lat;
+                    curr_lon = lon;
                 }
             });
 
