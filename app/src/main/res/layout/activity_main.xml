@@ -97,15 +97,25 @@
             android:layout_weight="3"
             android:layout_marginTop="5sp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="350sp">
 
             <TextView
+                android:layout_columnWeight="1"
                 android:layout_column="0"
                 android:layout_row="0"
-                android:layout_height="300sp"
+                android:layout_height="match_parent"
                 android:layout_width="200sp"
-                android:text="Point data"/>
+                android:text="Point data"
+                android:id="@+id/buttonData"/>
 
+            <include
+                layout="@layout/scroll"
+                android:layout_columnWeight="1"
+                android:layout_column="1"
+                android:layout_row="0"
+                android:layout_width="180sp"
+                android:layout_height="match_parent"
+               />
 
 
 

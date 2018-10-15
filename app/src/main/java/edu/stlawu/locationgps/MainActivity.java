@@ -8,9 +8,14 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ButtonBarLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.Observable;
@@ -23,7 +28,12 @@ public class MainActivity
     private TextView tv_lat;
     private TextView tv_lon;
     private TextView tv_velo;
+    private TextView location_text;
     private Button new_point;
+    private ScrollView scroll_View;
+    private TableLayout table;
+    private int index;
+
 
     private Double curr_lat;
     private Double curr_lon;
@@ -43,12 +53,26 @@ public class MainActivity
         this.tv_lat = findViewById(R.id.tv_lat);
         this.tv_lon = findViewById(R.id.tv_lon);
         this.tv_velo =findViewById(R.id.tv_velocity);
+        this.location_text = findViewById(R.id.buttonData);
+        this.scroll_View = findViewById(R.id.scroll_view);
+        this.table = findViewById(R.id.tableLayout);
+        this.index = 1;
 
       //add point button click listener
         this.new_point = findViewById(R.id.new_point);
         new_point.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final Button aButton = new Button(MainActivity.this);
+                aButton.setText("Location "+ index);
+                index++;
+                table.addView(aButton);
+                aButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        location_text.setText(aButton.getText());
+                    }
+                });
 
             }
         });

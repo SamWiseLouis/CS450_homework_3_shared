@@ -9,6 +9,5 @@ public class point {
         this.latitude = lat;
         this.longitude = lon;
         this.time = t;
-
     }
 }
