@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">LocationGPS</string>
 
-    <string name="curr_velocity">0</string>
-    <string name="curr_latitude">0</string>
-    <string name="curr_longitude">0</string>
 
 </resources>

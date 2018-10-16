@@ -18,6 +18,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -28,24 +29,46 @@ public class MainActivity
     private TextView tv_lat;
     private TextView tv_lon;
     private TextView tv_velo;
+    private TextView d_box;
     private TextView location_text;
     private Button new_point;
     private ScrollView scroll_View;
     private TableLayout table;
     private int index;
 
-
     private Double curr_lat;
     private Double curr_lon;
-
+    private long time1;
+    private Double old_lat;
+    private Double old_lon;
+    private long time2;
+    private Calendar cal;
     private Observable location;
     private LocationHandler handler = null;
     private final static int PERMISSION_REQUEST_CODE = 999;
+
 
     private boolean permissions_granted;
     private final static String LOGTAG =
             MainActivity.class.getSimpleName();
 
+    private String getDistance(){
+        double x1 = Math.toRadians(old_lat);
+        double y1 = Math.toRadians(old_lon);
+        long t1 = time1;
+
+        double x2 = Math.toRadians(curr_lat);
+        double y2 = Math.toRadians(curr_lon);
+        long t2 = time2;
+        double r =6371000;
+
+        double a = 1- Math.cos(x2-x1)/2;
+        double b = Math.cos(x2)*Math.cos(x1);
+        double c = 1- Math.cos(y2-y1)/2;
+        double h = a+b*c;
+        double d = 2*r * Math.asin(Math.sqrt(h));
+        return Double.toString(d);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,11 +77,14 @@ public class MainActivity
         this.tv_lon = findViewById(R.id.tv_lon);
         this.tv_velo =findViewById(R.id.tv_velocity);
         this.location_text = findViewById(R.id.buttonData);
+        this.d_box = findViewById(R.id.distance_box);
         this.scroll_View = findViewById(R.id.scroll_view);
         this.table = findViewById(R.id.tableLayout);
         this.index = 1;
-
-      //add point button click listener
+        this.curr_lat= 0.0;
+        this.curr_lon = 0.0;
+        this.cal = Calendar.getInstance();
+        //add point button click listener
         this.new_point = findViewById(R.id.new_point);
         new_point.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +96,7 @@ public class MainActivity
                 aButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        location_text.setText(aButton.getText());
+                        location_text.setText(""+curr_lat+curr_lon+ " time: "+ cal.getTimeInMillis());
                     }
                 });
 
@@ -136,9 +162,19 @@ public class MainActivity
                 public void run() {
                     tv_lat.setText(Double.toString(lat));
                     tv_lon.setText(Double.toString(lon));
-                   //save values just in case
-                    curr_lat = lat;
-                    curr_lon = lon;
+                    //save values just in case
+                    if(old_lat == null){
+                        old_lat= lat;
+                        old_lon = lon;
+                        time1 = cal.getTimeInMillis();
+                    }else{
+                        //save as the new positioin and time
+                        curr_lat = lat;
+                        curr_lon = lon;
+                        time2 = cal.getTimeInMillis();
+                        d_box.setText(getDistance());
+                    }
+
                 }
             });
 

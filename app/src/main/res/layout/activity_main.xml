@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:background="#FFAAAA"
             android:id="@+id/tv_lat"
-            />
+            android:text="" />
 
            <TextView
             android:layout_column="0"
@@ -43,7 +43,6 @@
                android:layout_height="wrap_content"
                android:background="#FFAAAA"
                android:id="@+id/tv_velocity"
-               android:text="@string/curr_velocity"
                />
            <TextView
                android:layout_column="1"
@@ -120,6 +119,10 @@
 
 
         </GridLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/distance_box"/>
 
 
 
