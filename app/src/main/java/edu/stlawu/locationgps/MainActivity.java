@@ -26,6 +26,7 @@ public class MainActivity
     private TextView tv_lat;
     private TextView tv_lon;
     private TextView tv_velo;
+    private TextView over_velo;
     private TextView d_box;
     private TextView d2_box;
     private TextView location_text;
@@ -80,6 +81,24 @@ public class MainActivity
         return (float) 0.0;
     }
 
+    private float totalVelocity(){
+        Location location1 = new Location("point A");
+        location1.setLatitude(old_lat);
+        location1.setLongitude(old_lon);
+
+        Location location2 = new Location("point B");
+        location2.setLatitude(curr_lat);
+        location2.setLongitude(curr_lon);
+
+        float distance = location1.distanceTo(location2);
+
+        float timeDifference = curr_time - old_time;
+
+        float velocity = distance/timeDifference;
+
+        return velocity;
+    }
+
 
 
     private Float getVelocity(){
@@ -114,7 +133,8 @@ public class MainActivity
         setContentView(R.layout.activity_main);
         this.tv_lat = findViewById(R.id.tv_lat);
         this.tv_lon = findViewById(R.id.tv_lon);
-        this.tv_velo =findViewById(R.id.tv_velocity);
+        this.tv_velo = findViewById(R.id.tv_velocity);
+        this.over_velo = findViewById(R.id.overall_velocity);
         this.location_text = findViewById(R.id.buttonData);
         this.d_box = findViewById(R.id.distance_box);
         this.d2_box = findViewById(R.id.distance2_box);
@@ -220,6 +240,7 @@ public class MainActivity
                         tv_velo.setText(Float.toString(getVelocity()));
                         d_box.setText(Double.toString(theDistance()));
                         d2_box.setText(Float.toString(theDistance2()));
+                        over_velo.setText(Float.toString(totalVelocity()));
                     }else{
                         old_lon = lon;
                         old_lat = lat;
