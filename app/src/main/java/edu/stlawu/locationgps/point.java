@@ -3,11 +3,20 @@ package edu.stlawu.locationgps;
 public class point {
     private Double latitude;
     private Double longitude;
-    private Double time;
+    private long time;
 
-    public point(Double lat, Double lon, Double t){
+    public point(Double lat, Double lon, long t){
         this.latitude = lat;
         this.longitude = lon;
-        this.time = t;
+        this.time = t/1000;  // transfer to seconds
+    }
+    public Double getLatitude() {
+        return latitude;
+    }
+    public Double getLongitude(){
+        return longitude;
+    }
+    public long getTime(){
+        return time;
     }
 }

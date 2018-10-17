@@ -2,6 +2,7 @@ package edu.stlawu.locationgps;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.location.Location;
 import  android.location.LocationManager;
 import android.support.annotation.NonNull;
@@ -18,6 +19,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Observable;
 import java.util.Observer;
@@ -46,7 +48,7 @@ public class MainActivity
     private Observable location;
     private LocationHandler handler = null;
     private final static int PERMISSION_REQUEST_CODE = 999;
-
+    private ArrayList<point> points;
 
     private boolean permissions_granted;
     private final static String LOGTAG =
@@ -80,6 +82,7 @@ public class MainActivity
         this.d_box = findViewById(R.id.distance_box);
         this.scroll_View = findViewById(R.id.scroll_view);
         this.table = findViewById(R.id.tableLayout);
+        this.points = new ArrayList<point>();
         this.index = 1;
         this.curr_lat= 0.0;
         this.curr_lon = 0.0;
@@ -91,18 +94,22 @@ public class MainActivity
             public void onClick(View v) {
                 final Button aButton = new Button(MainActivity.this);
                 aButton.setText("Location "+ index);
+                final point aPoint = new point(curr_lat,curr_lon,cal.getTimeInMillis());
+                points.add(aPoint);
                 index++;
                 table.addView(aButton);
                 aButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        location_text.setText(""+curr_lat+curr_lon+ " time: "+ cal.getTimeInMillis());
+                        int index1 = table.indexOfChild(aButton);
+                        System.out.println(index1);
+                         point apoint = points.get(index1-1);
+                         location_text.setText(Double.toString(aPoint.getLatitude())+ " "+Double.toString(aPoint.getLongitude())+ " "+ Long.toString(aPoint.getTime()) );
                     }
                 });
 
             }
         });
-
 
 
 
@@ -163,17 +170,19 @@ public class MainActivity
                     tv_lat.setText(Double.toString(lat));
                     tv_lon.setText(Double.toString(lon));
                     //save values just in case
-                    if(old_lat == null){
-                        old_lat= lat;
-                        old_lon = lon;
-                        time1 = cal.getTimeInMillis();
-                    }else{
-                        //save as the new positioin and time
-                        curr_lat = lat;
-                        curr_lon = lon;
-                        time2 = cal.getTimeInMillis();
-                        d_box.setText(getDistance());
-                    }
+                    curr_lon = lon;
+                    curr_lat= lat;
+//                    if(old_lat == null){
+//                        old_lat= lat;
+//                        old_lon = lon;
+//                        time1 = cal.getTimeInMillis();
+//                    }else{
+//                        //save as the new positioin and time
+//                        curr_lat = lat;
+//                        curr_lon = lon;
+//                        time2 = cal.getTimeInMillis();
+//                        d_box.setText(getDistance());
+//                    }
 
                 }
             });
