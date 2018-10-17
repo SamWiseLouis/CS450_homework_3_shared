@@ -44,7 +44,7 @@ public class MainActivity
     private Double old_lat;
     private Double old_lon;
     private long time2;
-    private Calendar cal;
+
     private Observable location;
     private LocationHandler handler = null;
     private final static int PERMISSION_REQUEST_CODE = 999;
@@ -53,7 +53,6 @@ public class MainActivity
     private boolean permissions_granted;
     private final static String LOGTAG =
             MainActivity.class.getSimpleName();
-
 
 
 
@@ -91,7 +90,7 @@ public class MainActivity
         this.index = 1;
         this.curr_lat= 0.0;
         this.curr_lon = 0.0;
-        this.cal = Calendar.getInstance();
+
         //add point button click listener
         this.new_point = findViewById(R.id.new_point);
         new_point.setOnClickListener(new View.OnClickListener() {
@@ -176,7 +175,7 @@ public class MainActivity
                     tv_lon.setText(Double.toString(lon));
                     //save values just in case
                     curr_lon = lon;
-                    curr_lat= lat;
+                    curr_lat = lat;
 //                    if(old_lat == null){
 //                        old_lat= lat;
 //                        old_lon = lon;
