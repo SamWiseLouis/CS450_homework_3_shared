@@ -2,21 +2,16 @@ package edu.stlawu.locationgps;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.graphics.Point;
 import android.location.Location;
-import  android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ButtonBarLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -32,6 +27,7 @@ public class MainActivity
     private TextView tv_lon;
     private TextView tv_velo;
     private TextView d_box;
+    private TextView d2_box;
     private TextView location_text;
     private Button new_point;
     private ScrollView scroll_View;
@@ -68,9 +64,25 @@ public class MainActivity
         return distance;
     }
 
+    private float theDistance2(){
+        if (points.size() > 1) {
+            Location location1 = new Location("point A");
+            location1.setLatitude(points.get(points.size() - 2).getLatitude());
+            location1.setLongitude(points.get(points.size() - 2).getLongitude());
+
+            Location location2 = new Location("point B");
+            location2.setLatitude(points.get(points.size() - 1).getLatitude());
+            location2.setLongitude(points.get(points.size() - 1).getLongitude());
+
+            float distance = location1.distanceTo(location2);
+            return distance;
+        }
+        return (float) 0.0;
+    }
 
 
-    private  Float getVelocity(){
+
+    private Float getVelocity(){
 
         Float d = theDistance();
         System.out.println( "the Distance is: "+ d);
@@ -105,6 +117,7 @@ public class MainActivity
         this.tv_velo =findViewById(R.id.tv_velocity);
         this.location_text = findViewById(R.id.buttonData);
         this.d_box = findViewById(R.id.distance_box);
+        this.d2_box = findViewById(R.id.distance2_box);
         this.scroll_View = findViewById(R.id.scroll_view);
         this.table = findViewById(R.id.tableLayout);
         this.points = new ArrayList<point>();
@@ -205,6 +218,8 @@ public class MainActivity
                         curr_time = Calendar.getInstance().getTimeInMillis()/1000;
 
                         tv_velo.setText(Float.toString(getVelocity()));
+                        d_box.setText(Double.toString(theDistance()));
+                        d2_box.setText(Float.toString(theDistance2()));
                     }else{
                         old_lon = lon;
                         old_lat = lat;
