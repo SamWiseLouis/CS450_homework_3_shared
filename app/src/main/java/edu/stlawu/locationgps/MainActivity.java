@@ -27,6 +27,7 @@ public class MainActivity
     private TextView tv_lon;
     private TextView tv_velo;
     private TextView over_velo;
+    private TextView velocity2;
     private TextView d_box;
     private TextView d2_box;
     private TextView location_text;
@@ -47,6 +48,9 @@ public class MainActivity
     private LocationHandler handler = null;
     private final static int PERMISSION_REQUEST_CODE = 999;
     private ArrayList<point> points;
+    private int selectionCounter = 1;
+    private point selection1;
+    private point selection2;
 
     private boolean permissions_granted;
     private final static String LOGTAG =
@@ -99,7 +103,28 @@ public class MainActivity
         return velocity;
     }
 
+    private float velocity2(point pointA, point pointB) {
+        point point1 = pointA;
+        point point2 = pointB;
+        if (selection1 != null && selection2 != null) {
+            Location location1 = new Location("point A");
+            location1.setLatitude(point1.getLatitude());
+            location1.setLongitude(point2.getLongitude());
 
+            Location location2 = new Location("point B");
+            location2.setLatitude(point2.getLatitude());
+            location2.setLongitude(point2.getLongitude());
+
+            float distance = location1.distanceTo(location2);
+
+            float timeDifference = Math.abs(point1.getTime()-point2.getTime());
+
+            float velocity = distance/timeDifference;
+
+            return velocity;
+        }
+        return (float) 0.0;
+    }
 
     private Float getVelocity(){
 
@@ -110,23 +135,6 @@ public class MainActivity
         return vel;
     }
 
-
-    private Double getDistance(){
-        double x1 = Math.toRadians(old_lat);
-        double y1 = Math.toRadians(old_lon);
-
-        double x2 = Math.toRadians(curr_lat);
-        double y2 = Math.toRadians(curr_lon);
-
-        double r =6371000;
-
-        double a = 1- Math.cos(x2-x1)/2;
-        double b = Math.cos(x2)*Math.cos(x1);
-        double c = 1- Math.cos(y2-y1)/2;
-        double h = a+b*c;
-        double d = 2*r * Math.asin(Math.sqrt(h));
-        return d;
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,6 +143,7 @@ public class MainActivity
         this.tv_lon = findViewById(R.id.tv_lon);
         this.tv_velo = findViewById(R.id.tv_velocity);
         this.over_velo = findViewById(R.id.overall_velocity);
+        this.velocity2 = findViewById(R.id.velocity2);
         this.location_text = findViewById(R.id.buttonData);
         this.d_box = findViewById(R.id.distance_box);
         this.d2_box = findViewById(R.id.distance2_box);
@@ -163,6 +172,14 @@ public class MainActivity
                         System.out.println(index1);
                          point apoint = points.get(index1-1);
                          location_text.setText(Double.toString(aPoint.getLatitude())+ " "+Double.toString(aPoint.getLongitude())+ " "+ Long.toString(aPoint.getTime()) );
+                         if (selectionCounter % 2 == 1) {
+                             selection1 = apoint;
+                             selectionCounter++;
+                         }
+                         if (selectionCounter % 2 == 2) {
+                             selection2 = apoint;
+                             selectionCounter++;
+                         }
                     }
                 });
 
@@ -241,6 +258,7 @@ public class MainActivity
                         d_box.setText(Double.toString(theDistance()));
                         d2_box.setText(Float.toString(theDistance2()));
                         over_velo.setText(Float.toString(totalVelocity()));
+                        velocity2.setText(Float.toString(velocity2(selection1, selection2)));
                     }else{
                         old_lon = lon;
                         old_lat = lat;

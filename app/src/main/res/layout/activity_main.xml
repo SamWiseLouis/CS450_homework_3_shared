@@ -24,8 +24,7 @@
             android:layout_width="100sp"
             android:layout_height="wrap_content"
             android:background="#FFAAAA"
-            android:id="@+id/tv_lat"
-            android:text="" />
+            android:id="@+id/tv_lat" />
 
            <TextView
             android:layout_column="0"
@@ -57,7 +56,7 @@
                android:layout_row="1"
                android:layout_height="wrap_content"
                android:layout_width="wrap_content"
-               android:text=" Current Lattitude"
+               android:text=" Current Longitude"
                />
 
            <TextView
@@ -119,19 +118,71 @@
 
 
         </GridLayout>
-        <TextView
+
+        <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="3sp">
+        <TextView
+            android:layout_marginTop="15sp"
+            android:layout_column="0"
+            android:layout_row="0"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content"
+            android:background="#FFAAAA"
             android:id="@+id/distance_box"/>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_column="0"
+            android:layout_row="1"
+            android:layout_width="100sp"
             android:layout_height="wrap_content"
+            android:background="#AAAAAA"
             android:id="@+id/distance2_box"/>
         <TextView
-            android:layout_width="match_parent"
+            android:layout_column="0"
+            android:layout_row="2"
+            android:layout_width="100sp"
             android:layout_height="wrap_content"
+            android:background="#FFAAAA"
             android:id="@+id/overall_velocity"/>
+        <TextView
+            android:layout_column="0"
+            android:layout_row="3"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content"
+            android:background="#AAAAAA"
+            android:id="@+id/velocity2"/>
+            <TextView
+                android:layout_marginTop="15sp"
+                android:layout_column="1"
+                android:layout_row="0"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Overall Distance"
+                />
+            <TextView
+                android:layout_column="1"
+                android:layout_row="1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Distance between last 2 points"
+                />
+            <TextView
+                android:layout_column="1"
+                android:layout_row="2"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Overall Velocity"
+                />
+            <TextView
+                android:layout_column="1"
+                android:layout_row="3"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Velocity between 2 selected points"
+                />
+        </GridLayout>
 
 
 
