@@ -54,9 +54,14 @@ public class MainActivity
     private final static String LOGTAG =
             MainActivity.class.getSimpleName();
 
-    private String getDistance(){
-        double x1 = Math.toRadians(old_lat);
-        double y1 = Math.toRadians(old_lon);
+
+
+
+
+
+    private String getDistance(point p1, point p2){
+        double x1 = Math.toRadians(points.get(index-2).getLatitude());
+        double y1 = Math.toRadians(points.get(index-2).getLongitude());
         long t1 = time1;
 
         double x2 = Math.toRadians(curr_lat);
@@ -94,7 +99,7 @@ public class MainActivity
             public void onClick(View v) {
                 final Button aButton = new Button(MainActivity.this);
                 aButton.setText("Location "+ index);
-                final point aPoint = new point(curr_lat,curr_lon,cal.getTimeInMillis());
+                final point aPoint = new point(curr_lat,curr_lon,Calendar.getInstance().getTimeInMillis());
                 points.add(aPoint);
                 index++;
                 table.addView(aButton);
