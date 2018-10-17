@@ -8,7 +8,7 @@ public class point {
     public point(Double lat, Double lon, long t){
         this.latitude = lat;
         this.longitude = lon;
-        this.time = t/1000;  // transfer to seconds
+        this.time = t;  // transfer to seconds
     }
     public Double getLatitude() {
         return latitude;

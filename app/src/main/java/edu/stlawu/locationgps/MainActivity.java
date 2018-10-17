@@ -40,10 +40,11 @@ public class MainActivity
 
     private Double curr_lat;
     private Double curr_lon;
-    private long time1;
+    private long curr_time;
+
     private Double old_lat;
     private Double old_lon;
-    private long time2;
+    private long old_time;
 
     private Observable location;
     private LocationHandler handler = null;
@@ -54,18 +55,38 @@ public class MainActivity
     private final static String LOGTAG =
             MainActivity.class.getSimpleName();
 
+    private float theDistance(){
+        Location location1 = new Location("point A");
+        location1.setLatitude(old_lat);
+        location1.setLongitude(old_lon);
+
+        Location location2 = new Location("point B");
+        location2.setLatitude(curr_lat);
+        location2.setLongitude(curr_lon);
+
+        float distance = location1.distanceTo(location2);
+        return distance;
+    }
 
 
 
+    private  Float getVelocity(){
 
-    private String getDistance(point p1, point p2){
-        double x1 = Math.toRadians(points.get(index-2).getLatitude());
-        double y1 = Math.toRadians(points.get(index-2).getLongitude());
-        long t1 = time1;
+        Float d = theDistance();
+        System.out.println( "the Distance is: "+ d);
+        System.out.println("the change in time is: "+ (curr_time-old_time));
+        float vel = d/curr_time-old_time;
+        return vel;
+    }
+
+
+    private Double getDistance(){
+        double x1 = Math.toRadians(old_lat);
+        double y1 = Math.toRadians(old_lon);
 
         double x2 = Math.toRadians(curr_lat);
         double y2 = Math.toRadians(curr_lon);
-        long t2 = time2;
+
         double r =6371000;
 
         double a = 1- Math.cos(x2-x1)/2;
@@ -73,7 +94,7 @@ public class MainActivity
         double c = 1- Math.cos(y2-y1)/2;
         double h = a+b*c;
         double d = 2*r * Math.asin(Math.sqrt(h));
-        return Double.toString(d);
+        return d;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +119,7 @@ public class MainActivity
             public void onClick(View v) {
                 final Button aButton = new Button(MainActivity.this);
                 aButton.setText("Location "+ index);
-                final point aPoint = new point(curr_lat,curr_lon,Calendar.getInstance().getTimeInMillis());
+                final point aPoint = new point(old_lat,old_lon,old_time);
                 points.add(aPoint);
                 index++;
                 table.addView(aButton);
@@ -173,21 +194,22 @@ public class MainActivity
                 public void run() {
                     tv_lat.setText(Double.toString(lat));
                     tv_lon.setText(Double.toString(lon));
-                    //save values just in case
-                    curr_lon = lon;
-                    curr_lat = lat;
-//                    if(old_lat == null){
-//                        old_lat= lat;
-//                        old_lon = lon;
-//                        time1 = cal.getTimeInMillis();
-//                    }else{
-//                        //save as the new positioin and time
-//                        curr_lat = lat;
-//                        curr_lon = lon;
-//                        time2 = cal.getTimeInMillis();
-//                        d_box.setText(getDistance());
-//                    }
+                    //save values before update
+                    if(old_lat != null && old_lat != 0) {
+                        old_lat = curr_lat;
+                        old_lon = curr_lon;
+                        old_time = curr_time;
 
+                        curr_lon = lon;
+                        curr_lat = lat;
+                        curr_time = Calendar.getInstance().getTimeInMillis()/1000;
+
+                        tv_velo.setText(Float.toString(getVelocity()));
+                    }else{
+                        old_lon = lon;
+                        old_lat = lat;
+                        old_time = Calendar.getInstance().getTimeInMillis()/1000;
+                    }
                 }
             });
 
